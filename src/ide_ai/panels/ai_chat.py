@@ -37,9 +37,9 @@ class AIChatPanel(Vertical):
     """
 
     BINDINGS = [
-        ("ctrl+enter", "send_message", "Send"),
-        ("ctrl+l", "clear_chat", "Clear"),
-        ("ctrl+shift+a", "toggle_provider", "Switch AI"),
+        Binding("ctrl+enter", "send_message", "Send"),
+        Binding("ctrl+l", "clear_chat", "Clear", priority=True),
+        Binding("ctrl+shift+a", "toggle_provider", "Switch AI"),
     ]
 
     def __init__(self, **kwargs) -> None:

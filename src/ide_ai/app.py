@@ -18,7 +18,8 @@ class IdeApp(App[None]):
         Binding("ctrl+w", "close_box", "Close", show=True),
         Binding("ctrl+right_square_bracket", "next_box", "Next panel", show=True),
         Binding("ctrl+left_square_bracket", "prev_box", "Prev panel", show=False),
-        Binding("q", "quit", "Quit", show=True),
+        Binding("escape", "prev_box", "Prev panel", show=False),
+        Binding("ctrl+q", "quit", "Quit", show=True),
     ]
 
     def compose(self) -> ComposeResult:

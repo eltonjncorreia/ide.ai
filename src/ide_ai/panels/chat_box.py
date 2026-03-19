@@ -242,23 +242,23 @@ class ChatBox(Vertical):
         self._conversation.append(f"You: {message}")
         response_buf: list[str] = []
         provider_name = self.provider.name
+        accumulated = ""
+        last_flush = asyncio.get_event_loop().time()
         try:
             async for chunk in self.provider.send(message):
+                accumulated += chunk
                 response_buf.append(chunk)
-                accumulated = "".join(response_buf)
-                preview.update(
-                    f"[bold green]{provider_name}:[/] {escape(accumulated)}"
-                )
-                log.scroll_end(animate=False)
+                now = asyncio.get_event_loop().time()
+                if now - last_flush >= 0.05:  # atualiza preview a cada 50 ms
+                    preview.update(f"[bold green]{provider_name}:[/] {escape(accumulated)}")
+                    log.scroll_end(animate=False)
+                    last_flush = now
         except Exception as exc:
             preview.update(f"[bold red]Error:[/] {escape(str(exc))}")
         finally:
-            self._last_response = "".join(response_buf)
-            # Commit to RichLog and clear preview
+            self._last_response = accumulated
             if self._last_response:
-                log.write(
-                    f"[bold green]{provider_name}:[/] {escape(self._last_response)}"
-                )
+                log.write(f"[bold green]{provider_name}:[/] {escape(self._last_response)}")
                 self._conversation.append(f"{provider_name}: {self._last_response}")
             preview.update("")
             log.scroll_end(animate=False)

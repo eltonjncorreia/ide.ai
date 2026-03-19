@@ -27,7 +27,7 @@ class ClaudeProvider(AIProvider):
         assert proc.stdout
         assert proc.stderr
         while True:
-            chunk = await proc.stdout.read(256)
+            chunk = await proc.stdout.read(4096)
             if not chunk:
                 break
             yield chunk.decode(errors="replace")
