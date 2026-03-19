@@ -56,21 +56,23 @@ uv run python -m ide_ai
 
 ### Gerenciar caixinhas
 
-| Tecla    | Ação                        |
-| -------- | --------------------------- |
-| `Ctrl+N` | Criar nova caixinha de chat |
-| `Ctrl+W` | Fechar a caixinha ativa     |
-| `Ctrl+]` | Ir para a próxima caixinha  |
-| `Ctrl+[` | Ir para a caixinha anterior |
-| `q`      | Sair                        |
+| Tecla          | Ação                        |
+| -------------- | --------------------------- |
+| `Ctrl+N`       | Criar nova caixinha de chat |
+| `Ctrl+W`       | Fechar a caixinha ativa     |
+| `Ctrl+]`       | Ir para a próxima caixinha  |
+| `Ctrl+[` / `Esc` | Ir para a caixinha anterior |
+| `Ctrl+Q`       | Sair                        |
 
 ### Dentro de cada caixinha
 
-| Tecla          | Ação                                |
-| -------------- | ----------------------------------- |
-| `Ctrl+Enter`   | Enviar mensagem para a AI           |
-| `Ctrl+L`       | Limpar histórico do chat            |
-| `Ctrl+Shift+A` | Alternar provider: Claude ↔ Copilot |
+| Tecla            | Ação                                  |
+| ---------------- | ------------------------------------- |
+| `Ctrl+Enter`     | Enviar mensagem para a AI             |
+| `Ctrl+L`         | Limpar histórico do chat              |
+| `Ctrl+Y`         | Alternar provider: Claude ↔ Copilot   |
+| `Ctrl+Shift+C`   | Copiar última resposta                |
+| `Ctrl+Shift+A`   | Copiar toda a conversa                |
 
 ## Estrutura
 
