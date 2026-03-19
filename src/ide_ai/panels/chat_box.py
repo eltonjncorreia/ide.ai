@@ -12,6 +12,9 @@ Aparência quando 3 caixinhas na tela:
 
 from __future__ import annotations
 
+import asyncio
+
+from rich.markup import escape
 from textual.app import ComposeResult
 from textual.binding import Binding
 from textual.containers import Horizontal, Vertical
@@ -70,6 +73,12 @@ class ChatBox(Vertical):
         height: 1fr;
         padding: 0 1;
     }
+    ChatBox > #stream-preview {
+        height: auto;
+        min-height: 1;
+        padding: 0 1;
+        color: $text;
+    }
     ChatBox > #chat-input-row {
         height: 3;
         layout: horizontal;
@@ -121,6 +130,7 @@ class ChatBox(Vertical):
             yield Select(_options, value=0, id="provider-select", allow_blank=False)
             yield Static("", id="box-busy")
         yield RichLog(id="chat-log", highlight=True, markup=True, wrap=True)
+        yield Static("", id="stream-preview")
         with Horizontal(id="chat-input-row"):
             yield Static(">", id="input-prompt")
             yield Input(placeholder="Ask AI… (or /claude, /copilot)", id="chat-input")
@@ -223,24 +233,34 @@ class ChatBox(Vertical):
 
     async def _stream(self, message: str) -> None:
         log = self.query_one("#chat-log", RichLog)
+        preview = self.query_one("#stream-preview", Static)
         busy = self.query_one("#box-busy", Static)
         self._busy = True
         self._last_response = ""
         busy.update("⏳")
-        log.write(f"\n[bold cyan]You:[/] {message}\n[bold green]{self.provider.name}:[/] ")
+        log.write(f"[bold cyan]You:[/] {escape(message)}")
         self._conversation.append(f"You: {message}")
         response_buf: list[str] = []
+        provider_name = self.provider.name
         try:
             async for chunk in self.provider.send(message):
-                log.write(chunk)
-                log.scroll_end(animate=False)
                 response_buf.append(chunk)
+                accumulated = "".join(response_buf)
+                preview.update(
+                    f"[bold green]{provider_name}:[/] {escape(accumulated)}"
+                )
+                log.scroll_end(animate=False)
         except Exception as exc:
-            log.write(f"\n[bold red]Error:[/] {exc}\n")
+            preview.update(f"[bold red]Error:[/] {escape(str(exc))}")
         finally:
-            log.write("\n")
+            self._last_response = "".join(response_buf)
+            # Commit to RichLog and clear preview
+            if self._last_response:
+                log.write(
+                    f"[bold green]{provider_name}:[/] {escape(self._last_response)}"
+                )
+                self._conversation.append(f"{provider_name}: {self._last_response}")
+            preview.update("")
+            log.scroll_end(animate=False)
             self._busy = False
             busy.update("")
-            self._last_response = "".join(response_buf)
-            if self._last_response:
-                self._conversation.append(f"{self.provider.name}: {self._last_response}")
