@@ -1,0 +1,95 @@
+/* ── Global ──────────────────────────────────────────────────────────────── */
+Screen {
+    background: transparent;
+    layers: base overlay;
+}
+
+Header {
+    background: transparent;
+    color: $foreground;
+    text-style: bold;
+}
+
+Footer {
+    background: transparent;
+    color: $foreground;
+}
+
+/* ── PanelGrid ────────────────────────────────────────────────────────────── */
+PanelGrid {
+    layout: grid;
+    grid-size: 1;
+    height: 1fr;
+    padding: 0 1;
+    grid-gutter: 1 1;
+}
+
+/* ── Status bar ───────────────────────────────────────────────────────────── */
+#status-bar {
+    height: 1;
+    padding: 0 2;
+    background: $panel-lighten-2;
+    color: $text-muted;
+    dock: bottom;
+}
+
+/* ── ChatBox ──────────────────────────────────────────────────────────────── */
+ChatBox {
+    height: 1fr;
+    border: round $panel-lighten-2;
+}
+
+ChatBox.--focused-box {
+    border: round $accent;
+}
+
+ChatBox > #box-header {
+    height: 1;
+    background: $panel-lighten-2;
+    layout: horizontal;
+    padding: 0 1;
+}
+
+ChatBox.--focused-box > #box-header {
+    background: $accent 15%;
+}
+
+ChatBox > #box-header > #box-title {
+    width: 1fr;
+    color: $text-muted;
+}
+
+ChatBox.--focused-box > #box-header > #box-title {
+    color: $accent;
+    text-style: bold;
+}
+
+ChatBox > #box-header > #box-busy {
+    width: auto;
+    color: $warning;
+}
+
+ChatBox > #chat-log {
+    height: 1fr;
+    padding: 0 1;
+    scrollbar-gutter: stable;
+}
+
+ChatBox > #chat-input-row {
+    height: 3;
+    layout: horizontal;
+    border-top: solid $panel-lighten-1;
+}
+
+ChatBox > #chat-input-row > #input-prompt {
+    width: auto;
+    padding: 0 1;
+    content-align: center middle;
+    color: $accent;
+}
+
+ChatBox > #chat-input-row > #chat-input {
+    width: 1fr;
+    border: none;
+    background: transparent;
+}

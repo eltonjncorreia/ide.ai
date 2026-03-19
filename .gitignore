@@ -205,3 +205,12 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# Secrets & credentials — never commit these
+*.key
+*.pem
+*.p12
+*.pfx
+secrets.toml
+secrets*.toml
+config.local.toml

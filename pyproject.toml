@@ -1,0 +1,25 @@
+[project]
+name = "ide-ai"
+version = "0.1.0"
+description = "TUI IDE for AI CLIs — Claude & Copilot"
+requires-python = ">=3.10"
+dependencies = [
+    "rich>=14.3.3",
+    "textual>=8.1.1",
+]
+
+[project.scripts]
+ide-ai = "ide_ai.app:run"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.24",
+    "textual[testing]>=8.1.1",
+]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+
+[tool.uv]
+package = true
