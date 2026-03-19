@@ -6,7 +6,7 @@ from .base import AIProvider
 
 
 class CopilotProvider(AIProvider):
-    """Streams responses from `gh copilot suggest` CLI."""
+    """Streams responses from `gh copilot explain` CLI."""
 
     @property
     def name(self) -> str:
@@ -19,7 +19,7 @@ class CopilotProvider(AIProvider):
 
         full_message = "\n\n".join([*context, message]) if context else message
         proc = await asyncio.create_subprocess_exec(
-            "gh", "copilot", "suggest", "-t", "generic", full_message,
+            "gh", "copilot", "explain", full_message,
             stdout=asyncio.subprocess.PIPE,
             stderr=asyncio.subprocess.STDOUT,
         )

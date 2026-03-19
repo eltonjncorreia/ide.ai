@@ -20,17 +20,20 @@ class ClaudeProvider(AIProvider):
 
         full_message = "\n\n".join([*context, message]) if context else message
         proc = await asyncio.create_subprocess_exec(
-            "claude", "--print", full_message,
+            "claude", "-p", full_message,
             stdout=asyncio.subprocess.PIPE,
-            stderr=asyncio.subprocess.STDOUT,
+            stderr=asyncio.subprocess.PIPE,
         )
         assert proc.stdout
+        assert proc.stderr
         while True:
             chunk = await proc.stdout.read(256)
             if not chunk:
                 break
             yield chunk.decode(errors="replace")
-        await proc.wait()
+        _, stderr_data = await proc.communicate()
+        if proc.returncode != 0 and stderr_data:
+            yield f"\n[bold red]Error (exit {proc.returncode}):[/] {stderr_data.decode(errors='replace')}\n"
 
     async def clear_session(self) -> None:
         pass  # stateless per-call

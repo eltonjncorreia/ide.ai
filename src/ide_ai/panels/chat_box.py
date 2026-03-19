@@ -15,7 +15,7 @@ from __future__ import annotations
 from textual.app import ComposeResult
 from textual.containers import Horizontal, Vertical
 from textual.message import Message
-from textual.widgets import Input, RichLog, Static
+from textual.widgets import Input, RichLog, Select, Static
 
 from ..ai.claude import ClaudeProvider
 from ..ai.copilot import CopilotProvider
@@ -57,6 +57,14 @@ class ChatBox(Vertical):
         width: auto;
         color: $warning;
     }
+    ChatBox > #box-header > #provider-select {
+        width: auto;
+        min-width: 12;
+        height: 1;
+        border: none;
+        background: transparent;
+        padding: 0;
+    }
     ChatBox > #chat-log {
         height: 1fr;
         padding: 0 1;
@@ -81,7 +89,7 @@ class ChatBox(Vertical):
     BINDINGS = [
         ("ctrl+enter", "send_message", "Send"),
         ("ctrl+l", "clear_chat", "Clear"),
-        ("ctrl+shift+a", "toggle_provider", "Switch AI"),
+        ("ctrl+y", "toggle_provider", "Switch AI"),
     ]
 
     class Focused(Message):
@@ -102,13 +110,15 @@ class ChatBox(Vertical):
         return self._providers[self._provider_index]
 
     def compose(self) -> ComposeResult:
+        _options = [(cls().name, i) for i, cls in enumerate(_PROVIDERS)]
         with Horizontal(id="box-header"):
             yield Static(self._title_markup(), id="box-title")
+            yield Select(_options, value=0, id="provider-select", allow_blank=False)
             yield Static("", id="box-busy")
         yield RichLog(id="chat-log", highlight=True, markup=True, wrap=True)
         with Horizontal(id="chat-input-row"):
             yield Static(">", id="input-prompt")
-            yield Input(placeholder="Ask AI…", id="chat-input")
+            yield Input(placeholder="Ask AI… (or /claude, /copilot)", id="chat-input")
 
     def on_mount(self) -> None:
         log = self.query_one("#chat-log", RichLog)
@@ -126,6 +136,10 @@ class ChatBox(Vertical):
     def on_input_focus(self, event: Input.Focus) -> None:
         pass  # handled by on_descendant_focus
 
+    def on_input_submitted(self, event: Input.Submitted) -> None:
+        """Send message when user presses Enter in the chat input."""
+        self.action_send_message()
+
     def set_active(self, active: bool) -> None:
         if active:
             self.add_class("--focused-box")
@@ -139,6 +153,13 @@ class ChatBox(Vertical):
     def _update_header(self) -> None:
         self.query_one("#box-title", Static).update(self._title_markup())
 
+    def on_select_changed(self, event: Select.Changed) -> None:
+        if event.select.id == "provider-select" and event.value is not Select.BLANK:
+            self._provider_index = int(event.value)
+            self._update_header()
+            log = self.query_one("#chat-log", RichLog)
+            log.write(f"\n[dim]— switched to {self.provider.name} —[/]\n")
+
     # ── actions ────────────────────────────────────────────────────────────
 
     def action_send_message(self) -> None:
@@ -146,6 +167,20 @@ class ChatBox(Vertical):
         msg = inp.value.strip()
         if not msg or self._busy:
             return
+
+        # slash commands: /claude  /copilot
+        lower = msg.lower()
+        for i, cls in enumerate(_PROVIDERS):
+            if lower == f"/{cls().name.lower()}":
+                inp.value = ""
+                self._provider_index = i
+                self._update_header()
+                sel = self.query_one("#provider-select", Select)
+                sel.value = i
+                log = self.query_one("#chat-log", RichLog)
+                log.write(f"\n[dim]— switched to {self.provider.name} —[/]\n")
+                return
+
         inp.value = ""
         self.run_worker(self._stream(msg), exclusive=True, name=f"box-{self.id}")
 
@@ -154,6 +189,8 @@ class ChatBox(Vertical):
 
     def action_toggle_provider(self) -> None:
         self._provider_index = (self._provider_index + 1) % len(self._providers)
+        sel = self.query_one("#provider-select", Select)
+        sel.value = self._provider_index
         self._update_header()
         log = self.query_one("#chat-log", RichLog)
         log.write(f"\n[dim]— {self.provider.name} —[/]\n")
@@ -169,6 +206,7 @@ class ChatBox(Vertical):
         try:
             async for chunk in self.provider.send(message):
                 log.write(chunk)
+                log.scroll_end(animate=False)
         except Exception as exc:
             log.write(f"\n[bold red]Error:[/] {exc}\n")
         finally:
