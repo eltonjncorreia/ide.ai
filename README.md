@@ -3,6 +3,8 @@
 TUI com múltiplas caixinhas de AI chat no terminal — focado em AI developer experience.
 Construído com [Textual](https://github.com/Textualize/textual) + [Rich](https://github.com/Textualize/rich).
 
+![alt text](image.png)
+
 ![alt text](image-2.png)
 
 ![alt text](image-1.png)
@@ -56,23 +58,23 @@ uv run python -m ide_ai
 
 ### Gerenciar caixinhas
 
-| Tecla          | Ação                        |
-| -------------- | --------------------------- |
-| `Ctrl+N`       | Criar nova caixinha de chat |
-| `Ctrl+W`       | Fechar a caixinha ativa     |
-| `Ctrl+]`       | Ir para a próxima caixinha  |
+| Tecla            | Ação                        |
+| ---------------- | --------------------------- |
+| `Ctrl+N`         | Criar nova caixinha de chat |
+| `Ctrl+W`         | Fechar a caixinha ativa     |
+| `Ctrl+]`         | Ir para a próxima caixinha  |
 | `Ctrl+[` / `Esc` | Ir para a caixinha anterior |
-| `Ctrl+Q`       | Sair                        |
+| `Ctrl+Q`         | Sair                        |
 
 ### Dentro de cada caixinha
 
-| Tecla            | Ação                                  |
-| ---------------- | ------------------------------------- |
-| `Ctrl+Enter`     | Enviar mensagem para a AI             |
-| `Ctrl+L`         | Limpar histórico do chat              |
-| `Ctrl+Y`         | Alternar provider: Claude ↔ Copilot   |
-| `Ctrl+Shift+C`   | Copiar última resposta                |
-| `Ctrl+Shift+A`   | Copiar toda a conversa                |
+| Tecla          | Ação                                |
+| -------------- | ----------------------------------- |
+| `Ctrl+Enter`   | Enviar mensagem para a AI           |
+| `Ctrl+L`       | Limpar histórico do chat            |
+| `Ctrl+Y`       | Alternar provider: Claude ↔ Copilot |
+| `Ctrl+Shift+C` | Copiar última resposta              |
+| `Ctrl+Shift+A` | Copiar toda a conversa              |
 
 ## Estrutura
 
