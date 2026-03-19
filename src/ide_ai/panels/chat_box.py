@@ -13,6 +13,7 @@ Aparência quando 3 caixinhas na tela:
 from __future__ import annotations
 
 from textual.app import ComposeResult
+from textual.binding import Binding
 from textual.containers import Horizontal, Vertical
 from textual.message import Message
 from textual.widgets import Input, RichLog, Select, Static
@@ -87,9 +88,11 @@ class ChatBox(Vertical):
     """
 
     BINDINGS = [
-        ("ctrl+enter", "send_message", "Send"),
-        ("ctrl+l", "clear_chat", "Clear"),
-        ("ctrl+y", "toggle_provider", "Switch AI"),
+        Binding("ctrl+enter", "send_message", "Send"),
+        Binding("ctrl+l", "clear_chat", "Clear", priority=True),
+        Binding("ctrl+y", "toggle_provider", "Switch AI"),
+        Binding("ctrl+shift+c", "copy_response", "Copy last response"),
+        Binding("ctrl+shift+a", "copy_conversation", "Copy all"),
     ]
 
     class Focused(Message):
@@ -104,6 +107,8 @@ class ChatBox(Vertical):
         self._providers = [cls() for cls in _PROVIDERS]
         self._provider_index = 0
         self._busy = False
+        self._last_response: str = ""
+        self._conversation: list[str] = []  # plain-text lines for copy
 
     @property
     def provider(self) -> AIProvider:
@@ -122,7 +127,10 @@ class ChatBox(Vertical):
 
     def on_mount(self) -> None:
         log = self.query_one("#chat-log", RichLog)
-        log.write(f"[dim]Session {self.number} · {self.provider.name} · Ctrl+Enter send[/]\n")
+        log.write(
+            f"[dim]Session {self.number} · {self.provider.name} · "
+            f"Ctrl+Enter send · Ctrl+Shift+C copy response · Ctrl+Shift+A copy all[/]\n"
+        )
 
     def on_focus(self) -> None:
         self.post_message(ChatBox.Focused(self))
@@ -186,6 +194,22 @@ class ChatBox(Vertical):
 
     def action_clear_chat(self) -> None:
         self.query_one("#chat-log", RichLog).clear()
+        self._last_response = ""
+        self._conversation.clear()
+
+    def action_copy_response(self) -> None:
+        if not self._last_response:
+            self.app.notify("No response to copy yet.", severity="warning")
+            return
+        self.app.copy_to_clipboard(self._last_response)
+        self.app.notify("Last response copied to clipboard.", timeout=2)
+
+    def action_copy_conversation(self) -> None:
+        if not self._conversation:
+            self.app.notify("Nothing to copy yet.", severity="warning")
+            return
+        self.app.copy_to_clipboard("\n".join(self._conversation))
+        self.app.notify("Conversation copied to clipboard.", timeout=2)
 
     def action_toggle_provider(self) -> None:
         self._provider_index = (self._provider_index + 1) % len(self._providers)
@@ -201,15 +225,22 @@ class ChatBox(Vertical):
         log = self.query_one("#chat-log", RichLog)
         busy = self.query_one("#box-busy", Static)
         self._busy = True
+        self._last_response = ""
         busy.update("⏳")
         log.write(f"\n[bold cyan]You:[/] {message}\n[bold green]{self.provider.name}:[/] ")
+        self._conversation.append(f"You: {message}")
+        response_buf: list[str] = []
         try:
             async for chunk in self.provider.send(message):
                 log.write(chunk)
                 log.scroll_end(animate=False)
+                response_buf.append(chunk)
         except Exception as exc:
             log.write(f"\n[bold red]Error:[/] {exc}\n")
         finally:
             log.write("\n")
             self._busy = False
             busy.update("")
+            self._last_response = "".join(response_buf)
+            if self._last_response:
+                self._conversation.append(f"{self.provider.name}: {self._last_response}")
