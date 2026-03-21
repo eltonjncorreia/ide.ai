@@ -14,16 +14,22 @@ class FileTreePanel(Vertical):
         width: 24;
         height: 1fr;
         border: solid $panel-lighten-1;
+        background: $panel-lighten-3 5%;
+        color: $text-muted;
+        transition: color 200ms, border 200ms, background 200ms;
     }
     FileTreePanel.--focused-box {
         border: solid $accent 50%;
+        background: transparent;
+        color: $text;
     }
     FileTreePanel > #tree-header {
         height: 1;
-        padding: 0 1;
+        padding: 0 2;
         background: $panel-lighten-2;
-        color: $foreground-muted;
+        color: $text-muted;
         text-style: bold;
+        transition: background 200ms, color 200ms;
     }
     FileTreePanel.--focused-box > #tree-header {
         background: $accent 10%;
@@ -55,3 +61,9 @@ class FileTreePanel(Vertical):
         self, event: DirectoryTree.FileSelected
     ) -> None:
         self.post_message(FileTreePanel.FileOpened(str(event.path)))
+
+    def set_active(self, active: bool) -> None:
+        if active:
+            self.add_class("--focused-box")
+        else:
+            self.remove_class("--focused-box")

@@ -11,13 +11,30 @@ class TerminalPanel(Vertical):
     TerminalPanel {
         height: 1fr;
         border: solid $panel-lighten-1;
+        background: $panel-lighten-3 5%;
+        color: $text-muted;
+        transition: color 200ms, border 200ms, background 200ms;
     }
     TerminalPanel.--focused-box {
         border: solid $accent 50%;
+        background: transparent;
+        color: $text;
+    }
+    TerminalPanel > #term-header {
+        height: 1;
+        padding: 0 2;
+        background: $panel-lighten-2;
+        color: $text-muted;
+        text-style: bold;
+        transition: background 200ms, color 200ms;
+    }
+    TerminalPanel.--focused-box > #term-header {
+        background: $accent 10%;
+        color: $accent;
     }
     TerminalPanel > #term-log {
         height: 1fr;
-        padding: 0 1;
+        padding: 1 1;
     }
     TerminalPanel > #term-input-bar {
         height: 3;
@@ -45,6 +62,7 @@ class TerminalPanel(Vertical):
         self._cwd = os.getcwd()
 
     def compose(self) -> ComposeResult:
+        yield Static("Terminal", id="term-header")
         yield RichLog(id="term-log", highlight=False, markup=False, wrap=True)
         with Horizontal(id="term-input-bar"):
             yield Static("$", id="term-prompt")
@@ -54,6 +72,12 @@ class TerminalPanel(Vertical):
         log = self.query_one("#term-log", RichLog)
         log.write(f"Terminal — cwd: {self._cwd}\n")
         self.query_one("#term-input", Input).focus()
+
+    def set_active(self, active: bool) -> None:
+        if active:
+            self.add_class("--focused-box")
+        else:
+            self.remove_class("--focused-box")
 
     def on_input_submitted(self, event: Input.Submitted) -> None:
         if event.input.id == "term-input":

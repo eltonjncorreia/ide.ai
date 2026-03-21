@@ -16,11 +16,19 @@ class AIChatPanel(Vertical):
     DEFAULT_CSS = """
     AIChatPanel {
         height: 1fr;
+        background: $panel-lighten-3 5%;
+        color: $text-muted;
+        transition: color 200ms, background 200ms;
+    }
+    AIChatPanel.--focused-box {
+        background: transparent;
+        color: $text;
     }
     AIChatPanel > #chat-log {
         height: 1fr;
         border: solid $panel-lighten-1;
-        padding: 0 1;
+        padding: 1 1;
+        transition: border 200ms;
     }
     AIChatPanel.--focused-box > #chat-log {
         border: solid $accent 50%;
@@ -89,6 +97,12 @@ class AIChatPanel(Vertical):
         label.update(f"[{self.provider.name}]")
         log = self.query_one("#chat-log", RichLog)
         log.write(f"\n[dim]— Switched to {self.provider.name} —[/]\n")
+
+    def set_active(self, active: bool) -> None:
+        if active:
+            self.add_class("--focused-box")
+        else:
+            self.remove_class("--focused-box")
 
     async def _stream_response(self, message: str) -> None:
         log = self.query_one("#chat-log", RichLog)

@@ -36,15 +36,21 @@ class ChatBox(Vertical):
         height: 1fr;
         border: solid $panel-lighten-1;
         padding: 0;
+        background: $panel-lighten-3 5%;
+        color: $text-muted;
+        transition: color 200ms, border 200ms, background 200ms;
     }
     ChatBox.--focused-box {
         border: solid $accent 50%;
+        background: transparent;
+        color: $text;
     }
     ChatBox > #box-header {
         height: 1;
         background: $panel-lighten-2;
         layout: horizontal;
-        padding: 0 1;
+        padding: 0 2;
+        transition: background 200ms, color 200ms;
     }
     ChatBox.--focused-box > #box-header {
         background: $accent 10%;
@@ -52,6 +58,7 @@ class ChatBox(Vertical):
     ChatBox > #box-header > #box-title {
         width: 1fr;
         color: $text-muted;
+        transition: color 200ms;
     }
     ChatBox.--focused-box > #box-header > #box-title {
         color: $accent;
@@ -71,7 +78,7 @@ class ChatBox(Vertical):
     }
     ChatBox > #chat-log {
         height: 1fr;
-        padding: 0 1;
+        padding: 1 1;
     }
     ChatBox > #stream-preview {
         height: auto;
