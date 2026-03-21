@@ -36,11 +36,11 @@ PanelGrid {
 /* ── ChatBox ──────────────────────────────────────────────────────────────── */
 ChatBox {
     height: 1fr;
-    border: round $panel-lighten-2;
+    border: solid $panel-lighten-1;
 }
 
 ChatBox.--focused-box {
-    border: round $accent;
+    border: solid $accent 50%;
 }
 
 ChatBox > #box-header {
@@ -51,7 +51,7 @@ ChatBox > #box-header {
 }
 
 ChatBox.--focused-box > #box-header {
-    background: $accent 15%;
+    background: $accent 10%;
 }
 
 ChatBox > #box-header > #box-title {

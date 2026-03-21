@@ -22,8 +22,12 @@ class AIChatPanel(Vertical):
         border: solid $panel-lighten-1;
         padding: 0 1;
     }
+    AIChatPanel.--focused-box > #chat-log {
+        border: solid $accent 50%;
+    }
     AIChatPanel > #chat-input-bar {
         height: 3;
+        border-top: solid $panel-lighten-1;
     }
     AIChatPanel > #chat-input-bar > #provider-label {
         width: auto;
@@ -33,6 +37,7 @@ class AIChatPanel(Vertical):
     }
     AIChatPanel > #chat-input-bar > #chat-input {
         width: 1fr;
+        border: none;
     }
     """
 

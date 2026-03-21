@@ -34,11 +34,11 @@ class ChatBox(Vertical):
     DEFAULT_CSS = """
     ChatBox {
         height: 1fr;
-        border: round $panel-lighten-2;
+        border: solid $panel-lighten-1;
         padding: 0;
     }
     ChatBox.--focused-box {
-        border: round $accent;
+        border: solid $accent 50%;
     }
     ChatBox > #box-header {
         height: 1;
@@ -47,7 +47,7 @@ class ChatBox(Vertical):
         padding: 0 1;
     }
     ChatBox.--focused-box > #box-header {
-        background: $accent 20%;
+        background: $accent 10%;
     }
     ChatBox > #box-header > #box-title {
         width: 1fr;

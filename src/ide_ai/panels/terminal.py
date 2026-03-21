@@ -12,12 +12,16 @@ class TerminalPanel(Vertical):
         height: 1fr;
         border: solid $panel-lighten-1;
     }
+    TerminalPanel.--focused-box {
+        border: solid $accent 50%;
+    }
     TerminalPanel > #term-log {
         height: 1fr;
         padding: 0 1;
     }
     TerminalPanel > #term-input-bar {
         height: 3;
+        border-top: solid $panel-lighten-1;
     }
     TerminalPanel > #term-input-bar > #term-prompt {
         width: auto;
@@ -27,6 +31,7 @@ class TerminalPanel(Vertical):
     }
     TerminalPanel > #term-input-bar > #term-input {
         width: 1fr;
+        border: none;
     }
     """
 

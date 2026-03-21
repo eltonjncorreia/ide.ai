@@ -15,12 +15,19 @@ class FileTreePanel(Vertical):
         height: 1fr;
         border: solid $panel-lighten-1;
     }
+    FileTreePanel.--focused-box {
+        border: solid $accent 50%;
+    }
     FileTreePanel > #tree-header {
         height: 1;
         padding: 0 1;
         background: $panel-lighten-2;
         color: $foreground-muted;
         text-style: bold;
+    }
+    FileTreePanel.--focused-box > #tree-header {
+        background: $accent 10%;
+        color: $accent;
     }
     FileTreePanel > DirectoryTree {
         height: 1fr;
