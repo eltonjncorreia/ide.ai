@@ -37,8 +37,6 @@ Múltiplas sessões de AI chat visíveis ao mesmo tempo, em grade responsiva:
 
 ## Requisitos
 
-- Python >= 3.10
-- [uv](https://github.com/astral-sh/uv) (gerenciador de pacotes recomendado)
 - `claude` CLI (opcional) — `npm install -g @anthropic-ai/claude-code`
 - `gh` CLI (opcional, para Copilot) — [cli.github.com](https://cli.github.com)
 
@@ -46,12 +44,54 @@ Múltiplas sessões de AI chat visíveis ao mesmo tempo, em grade responsiva:
 
 ## Como rodar
 
+### Opção 1: Executável Standalone (SEM Python)
+
+Baixe o executável pré-compilado do [Releases](https://github.com/seu-usuario/ide.ai/releases):
+
+**Linux:**
+```bash
+# Baixar e extrair
+curl -L https://github.com/seu-usuario/ide.ai/releases/download/vX.Y.Z/ide-ai-linux-x64 -o ide-ai
+chmod +x ide-ai
+
+# Executar
+./ide-ai
+```
+
+**Windows:**
+```powershell
+# Baixar (use o navegador ou curl)
+# https://github.com/seu-usuario/ide.ai/releases/download/vX.Y.Z/ide-ai-windows-x64.exe
+
+# Executar
+.\ide-ai-windows-x64.exe
+```
+
+### Opção 2: A partir do código-fonte (COM Python)
+
+Requisitos:
+- Python >= 3.10
+- [uv](https://github.com/astral-sh/uv) (gerenciador de pacotes recomendado)
+
 ```bash
 # Instalar dependências
 uv sync
 
 # Executar
 uv run python -m ide_ai
+```
+
+### Compilar você mesmo (BUILD)
+
+```bash
+# Instalar dependências
+uv sync
+
+# Build (requer PyInstaller)
+./build.sh
+
+# Executável gerado em: ./dist/ide-ai (Linux) ou ./dist/ide-ai.exe (Windows)
+./dist/ide-ai
 ```
 
 ## Comandos

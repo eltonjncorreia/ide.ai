@@ -1,0 +1,55 @@
+name: Build Releases
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            artifact_name: ide-ai
+            asset_name: ide-ai-linux-x64
+          - os: windows-latest
+            artifact_name: ide-ai.exe
+            asset_name: ide-ai-windows-x64.exe
+    
+    runs-on: ${{ matrix.os }}
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Install uv
+        uses: astral-sh/setup-uv@v2
+      
+      - name: Install dependencies
+        run: uv sync
+      
+      - name: Build with PyInstaller
+        run: |
+          python -m PyInstaller ide_ai.spec
+      
+      - name: Upload to GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: dist/${{ matrix.artifact_name }}
+          name: Release ${{ github.ref_name }}
+          body: "Standalone executables for ide-ai"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Upload build artifact for verification
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.asset_name }}
+          path: dist/${{ matrix.artifact_name }}
+          retention-days: 7
