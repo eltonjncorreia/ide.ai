@@ -32,42 +32,74 @@ class ChatBox(Vertical):
     """Self-contained AI chat panel — one 'caixinha'."""
 
     DEFAULT_CSS = """
+    /* ChatBox: Inactive state
+       - Subtle border and background for visual hierarchy
+       - Muted text indicates non-focused state
+       - Smooth transitions when focusing
+    */
     ChatBox {
         height: 1fr;
-        border: solid $panel-lighten-1;
+        border: solid $panel-lighten-1;    /* Fine line structure */
         padding: 0;
-        background: $panel-lighten-3 5%;
-        color: $text-muted;
+        background: $panel-lighten-3 5%;   /* Very subtle inactive background */
+        color: $text-muted;                /* Dimmed text indicates inactive */
         transition: color 200ms, border 200ms, background 200ms;
     }
+    
+    /* ChatBox: Focused state
+       - Bright accent border for clear focus indication
+       - Transparent background to highlight border
+       - Full-contrast text
+    */
     ChatBox.--focused-box {
-        border: solid $accent 50%;
-        background: transparent;
-        color: $text;
+        border: solid $accent 50%;         /* Bright accent border with transparency */
+        background: transparent;           /* Let border stand out */
+        color: $text;                      /* Full-contrast text */
     }
+    
+    /* ChatBox header: Inactive state
+       - Slightly elevated from panel background
+       - Muted text to indicate secondary content
+    */
     ChatBox > #box-header {
         height: 1;
-        background: $panel-lighten-2;
+        background: $panel-lighten-2;      /* Slightly elevated background */
         layout: horizontal;
         padding: 0 2;
         transition: background 200ms, color 200ms;
     }
+    
+    /* ChatBox header: Focused state
+       - Subtle accent tint for visual consistency
+    */
     ChatBox.--focused-box > #box-header {
-        background: $accent 10%;
+        background: $accent 10%;           /* Subtle accent tint */
     }
+    
+    /* ChatBox title: AI provider label
+       - Muted in inactive state
+       - Accent color when focused
+    */
     ChatBox > #box-header > #box-title {
         width: 1fr;
-        color: $text-muted;
+        color: $text-muted;                /* Muted text for inactive state */
         transition: color 200ms;
     }
+    
     ChatBox.--focused-box > #box-header > #box-title {
-        color: $accent;
+        color: $accent;                    /* Accent text for focus indication */
         text-style: bold;
     }
+    
+    /* ChatBox busy indicator: Activity spinner
+       - Warning color (amber) for visibility
+    */
     ChatBox > #box-header > #box-busy {
         width: auto;
-        color: $warning;
+        color: $warning;                   /* Warning (amber) for activity indicator */
     }
+    
+    /* Provider selector: AI model choice dropdown */
     ChatBox > #box-header > #provider-select {
         width: auto;
         min-width: 12;
@@ -76,27 +108,42 @@ class ChatBox(Vertical):
         background: transparent;
         padding: 0;
     }
+    
+    /* Chat log: Message history area */
     ChatBox > #chat-log {
         height: 1fr;
         padding: 1 1;
     }
+    
+    /* Stream preview: Real-time response display */
     ChatBox > #stream-preview {
         height: auto;
         min-height: 1;
         padding: 0 1;
-        color: $text;
+        color: $text;                      /* Full-contrast text for readability */
     }
+    
+    /* Chat input row: Horizontal layout for prompt + input */
     ChatBox > #chat-input-row {
         height: 3;
         layout: horizontal;
-        border-top: solid $panel-lighten-1;
+        border-top: solid $panel-lighten-1; /* Fine line separator */
     }
+    
+    /* Input prompt: Action indicator symbol ">"
+       - Accent color for action prompts
+       - Helps distinguish input area
+    */
     ChatBox > #chat-input-row > #input-prompt {
         width: auto;
         padding: 0 1;
         content-align: center middle;
-        color: $accent;
+        color: $accent;                    /* Accent color for action prompts */
     }
+    
+    /* Chat input field: User message entry
+       - Full-contrast text for readability
+    */
     ChatBox > #chat-input-row > #chat-input {
         width: 1fr;
         border: none;

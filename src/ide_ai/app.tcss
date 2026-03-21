@@ -1,3 +1,70 @@
+/*
+   ═════════════════════════════════════════════════════════════════════════════
+   IDE.AI — Color Palette & Semantic Variables
+   
+   Modern, cohesive palette inspired by Claude Code and GitHub Copilot.
+   Automatically adapts to the active Textual theme (dracula, nord, gruvbox,
+   catppuccin-mocha, rose-pine, etc.).
+   
+   VARIABLE REFERENCE:
+   ─────────────────────────────────────────────────────────────────────────────
+   Textual provides automatic color derivation:
+   
+   Core Colors (from theme):
+     $accent           Accent color for highlights (focus borders, active text)
+     $primary          Theme primary color (not used directly, for future use)
+     $secondary        Theme secondary color (not used directly, for future use)
+     $foreground       High-contrast text color (used for headers/footers)
+     $background       Terminal background (usually transparent in our layout)
+     $panel            Base panel background color
+     $surface          Surface/elevated background
+     $warning          Status warning color (amber/orange)
+     $error            Status error color (red)
+     $success          Status success color (green)
+   
+   Derived Colors (automatic tonal scale):
+     $panel-lighten-1  Subtle borders & dividers (lighten by ~10%)
+     $panel-lighten-2  Inactive panel headers & status bar (lighten by ~20%)
+     $panel-lighten-3  Inactive panel backgrounds, very subtle (lighten by ~30%)
+   
+   Text Colors:
+     $text             Primary text, full contrast
+     $text-muted       Secondary/dimmed text (lower contrast, semantic meaning)
+   
+   ═════════════════════════════════════════════════════════════════════════════
+   SEMANTIC COLOR DECISIONS:
+   
+   Inactive Panels:
+     background: $panel-lighten-3 5%    Very subtle, almost transparent
+     border:     solid $panel-lighten-1  Fine lines for structure
+     text:       $text-muted             Dimmed to indicate inactive state
+   
+   Active/Focused Panels:
+     background: transparent             Lets accent border stand out
+     border:     solid $accent 50%       Saturated accent color with transparency
+     text:       $text                   Full contrast
+     header:     $accent 10%             Subtle tint of accent in header
+   
+   Headers (inactive):
+     background: $panel-lighten-2        Slightly elevated from panel
+     color:      $text-muted             Muted to show non-focused state
+   
+   Headers (focused):
+     background: $accent 10%             Very subtle accent tint
+     color:      $accent                 Accent color for visual consistency
+     text-style: bold                    Bold for emphasis
+   
+   Input/Prompts:
+     color: $accent                      Action prompts use accent (> symbol)
+     Style: bold                         Emphasis for input areas
+   
+   Status Bar:
+     background: $panel-lighten-2        Slightly elevated
+     color:      $text-muted             Secondary information
+   
+   ═════════════════════════════════════════════════════════════════════════════
+*/
+
 /* ── Global ──────────────────────────────────────────────────────────────── */
 Screen {
     background: transparent;
@@ -6,13 +73,16 @@ Screen {
 
 Header {
     background: transparent;
+    /* High-contrast foreground for maximum readability */
     color: $foreground;
     text-style: bold;
 }
 
 Footer {
     background: transparent;
+    /* Consistent with header for visual cohesion */
     color: $foreground;
+    text-style: normal;
 }
 
 /* ── PanelGrid ────────────────────────────────────────────────────────────── */
@@ -28,28 +98,38 @@ PanelGrid {
 #status-bar {
     height: 1;
     padding: 0 2;
+    /* Slightly elevated background for visual hierarchy */
     background: $panel-lighten-2;
+    /* Muted text indicates secondary information */
     color: $text-muted;
     dock: bottom;
 }
 
-/* ── ChatBox ──────────────────────────────────────────────────────────────── */
+/* ── ChatBox (AI Chat Panel) ─────────────────────────────────────────────── */
 ChatBox {
     height: 1fr;
+    /* Subtle border using derived panel color; thin line structure */
     border: solid $panel-lighten-1;
+    /* Very subtle inactive background with slight transparency */
     background: $panel-lighten-3 5%;
-    color: $text-muted;
+    /* Primary text color */
+    color: $text;
+    /* Smooth transitions for focus state changes */
     transition: color 200ms, border 200ms, background 200ms;
 }
 
 ChatBox.--focused-box {
+    /* Bright accent border at 50% opacity for clear focus indication */
     border: solid $accent 50%;
+    /* Transparent background lets the accent border shine */
     background: transparent;
+    /* Full-contrast text in focused state */
     color: $text;
 }
 
 ChatBox > #box-header {
     height: 1;
+    /* Slightly elevated from panel background */
     background: $panel-lighten-2;
     layout: horizontal;
     padding: 0 2;
@@ -57,22 +137,27 @@ ChatBox > #box-header {
 }
 
 ChatBox.--focused-box > #box-header {
+    /* Subtle tint of accent color in header (10% opacity) */
     background: $accent 10%;
 }
 
 ChatBox > #box-header > #box-title {
     width: 1fr;
+    /* Muted text indicates inactive state */
     color: $text-muted;
-    transition: color 200ms;
+    text-style: normal;
+    transition: color 200ms, text-style 200ms;
 }
 
 ChatBox.--focused-box > #box-header > #box-title {
+    /* Accent color for visual focus indication */
     color: $accent;
     text-style: bold;
 }
 
 ChatBox > #box-header > #box-busy {
     width: auto;
+    /* Warning color for activity indicator */
     color: $warning;
 }
 
@@ -85,6 +170,7 @@ ChatBox > #chat-log {
 ChatBox > #chat-input-row {
     height: 3;
     layout: horizontal;
+    /* Fine line separator using derived panel color */
     border-top: solid $panel-lighten-1;
 }
 
@@ -92,11 +178,15 @@ ChatBox > #chat-input-row > #input-prompt {
     width: auto;
     padding: 0 1;
     content-align: center middle;
+    /* Accent color for action prompt (e.g., ">" symbol) */
     color: $accent;
+    text-style: bold;
 }
 
 ChatBox > #chat-input-row > #chat-input {
     width: 1fr;
     border: none;
     background: transparent;
+    /* Full-contrast text for input field */
+    color: $text;
 }

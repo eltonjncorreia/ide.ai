@@ -14,35 +14,59 @@ class AIChatPanel(Vertical):
     """AI Chat panel: conversation history + input box."""
 
     DEFAULT_CSS = """
+    /* AIChatPanel: Inactive state
+       - Very subtle background for visual hierarchy
+       - Muted text indicates non-focused state
+       - Smooth transitions when focusing
+    */
     AIChatPanel {
         height: 1fr;
-        background: $panel-lighten-3 5%;
-        color: $text-muted;
+        background: $panel-lighten-3 5%;   /* Very subtle inactive background */
+        color: $text-muted;                /* Dimmed text indicates inactive */
         transition: color 200ms, background 200ms;
     }
+    
+    /* AIChatPanel: Focused state
+       - Transparent background to highlight border
+       - Full-contrast text
+    */
     AIChatPanel.--focused-box {
-        background: transparent;
-        color: $text;
+        background: transparent;           /* Let border stand out */
+        color: $text;                      /* Full-contrast text */
     }
+    
+    /* Chat log: Message history area
+       - Subtle border in inactive state
+       - Bright accent border when focused
+    */
     AIChatPanel > #chat-log {
         height: 1fr;
-        border: solid $panel-lighten-1;
+        border: solid $panel-lighten-1;    /* Fine line structure */
         padding: 1 1;
         transition: border 200ms;
     }
+    
     AIChatPanel.--focused-box > #chat-log {
-        border: solid $accent 50%;
+        border: solid $accent 50%;         /* Bright accent border with transparency */
     }
+    
+    /* Chat input bar: Horizontal layout for provider + input */
     AIChatPanel > #chat-input-bar {
         height: 3;
-        border-top: solid $panel-lighten-1;
+        border-top: solid $panel-lighten-1; /* Fine line separator */
     }
+    
+    /* Provider label: AI model indicator
+       - Accent color for action prompts
+    */
     AIChatPanel > #chat-input-bar > #provider-label {
         width: auto;
         padding: 0 1;
         content-align: center middle;
-        color: $accent;
+        color: $accent;                    /* Accent color for provider indicator */
     }
+    
+    /* Chat input field: User message entry */
     AIChatPanel > #chat-input-bar > #chat-input {
         width: 1fr;
         border: none;
