@@ -9,9 +9,9 @@ DEST="${2:-/usr/local/bin}"
 
 if [ "$VERSION" == "latest" ]; then
     echo "Fetching latest release info..."
-    DOWNLOAD_URL=$(curl -s https://api.github.com/repos/seu-usuario/ide.ai/releases/latest | grep "ide-ai-linux-x64" | grep "browser_download_url" | cut -d '"' -f 4)
+    DOWNLOAD_URL=$(curl -s https://api.github.com/repos/eltonjncorreia/ide.ai/releases/latest | grep "ide-ai-linux-x64" | grep "browser_download_url" | cut -d '"' -f 4)
 else
-    DOWNLOAD_URL="https://github.com/seu-usuario/ide.ai/releases/download/v${VERSION}/ide-ai-linux-x64"
+    DOWNLOAD_URL="https://github.com/eltonjncorreia/ide.ai/releases/download/v${VERSION}/ide-ai-linux-x64"
 fi
 
 if [ -z "$DOWNLOAD_URL" ]; then

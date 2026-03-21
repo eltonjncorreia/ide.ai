@@ -46,16 +46,16 @@ Múltiplas sessões de AI chat visíveis ao mesmo tempo, em grade responsiva:
 
 ### Opção 1: Executável Standalone (SEM Python)
 
-Baixe o executável pré-compilado do [Releases](https://github.com/seu-usuario/ide.ai/releases):
+Baixe o executável pré-compilado do [Releases](https://github.com/eltonjncorreia/ide.ai/releases):
 
 #### Linux (com script automático)
 ```bash
-curl -L https://raw.githubusercontent.com/seu-usuario/ide.ai/main/install-linux.sh | bash
+curl -L https://raw.githubusercontent.com/eltonjncorreia/ide.ai/main/install-linux.sh | bash
 ```
 
 Ou manualmente:
 ```bash
-curl -L https://github.com/seu-usuario/ide.ai/releases/download/vX.Y.Z/ide-ai-linux-x64 -o ide-ai
+curl -L https://github.com/eltonjncorreia/ide.ai/releases/download/vX.Y.Z/ide-ai-linux-x64 -o ide-ai
 chmod +x ide-ai
 sudo mv ide-ai /usr/local/bin/
 ide-ai
@@ -63,14 +63,14 @@ ide-ai
 
 #### Windows (com script automático)
 ```powershell
-Invoke-WebRequest -Uri "https://raw.githubusercontent.com/seu-usuario/ide.ai/main/install-windows.ps1" -OutFile "install.ps1"
+Invoke-WebRequest -Uri "https://raw.githubusercontent.com/eltonjncorreia/ide.ai/main/install-windows.ps1" -OutFile "install.ps1"
 .\install.ps1
 ```
 
 Ou manualmente:
 ```powershell
 # Download ide-ai-windows-x64.exe de:
-# https://github.com/seu-usuario/ide.ai/releases/download/vX.Y.Z/ide-ai-windows-x64.exe
+# https://github.com/eltonjncorreia/ide.ai/releases/download/vX.Y.Z/ide-ai-windows-x64.exe
 
 # Executar
 .\ide-ai-windows-x64.exe

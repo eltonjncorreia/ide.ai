@@ -16,10 +16,10 @@ if (!(Test-Path -Path $Destination)) {
 # Get download URL
 if ($Version -eq "latest") {
     Write-Host "📥 Fetching latest release info..."
-    $latestRelease = Invoke-WebRequest -Uri "https://api.github.com/repos/seu-usuario/ide.ai/releases/latest" | ConvertFrom-Json
+    $latestRelease = Invoke-WebRequest -Uri "https://api.github.com/repos/eltonjncorreia/ide.ai/releases/latest" | ConvertFrom-Json
     $downloadUrl = $latestRelease.assets | Where-Object { $_.name -eq "ide-ai-windows-x64.exe" } | Select-Object -ExpandProperty browser_download_url
 } else {
-    $downloadUrl = "https://github.com/seu-usuario/ide.ai/releases/download/v$Version/ide-ai-windows-x64.exe"
+    $downloadUrl = "https://github.com/eltonjncorreia/ide.ai/releases/download/v$Version/ide-ai-windows-x64.exe"
 }
 
 if (!$downloadUrl) {
