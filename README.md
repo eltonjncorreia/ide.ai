@@ -48,19 +48,28 @@ Múltiplas sessões de AI chat visíveis ao mesmo tempo, em grade responsiva:
 
 Baixe o executável pré-compilado do [Releases](https://github.com/seu-usuario/ide.ai/releases):
 
-**Linux:**
+#### Linux (com script automático)
 ```bash
-# Baixar e extrair
-curl -L https://github.com/seu-usuario/ide.ai/releases/download/vX.Y.Z/ide-ai-linux-x64 -o ide-ai
-chmod +x ide-ai
-
-# Executar
-./ide-ai
+curl -L https://raw.githubusercontent.com/seu-usuario/ide.ai/main/install-linux.sh | bash
 ```
 
-**Windows:**
+Ou manualmente:
+```bash
+curl -L https://github.com/seu-usuario/ide.ai/releases/download/vX.Y.Z/ide-ai-linux-x64 -o ide-ai
+chmod +x ide-ai
+sudo mv ide-ai /usr/local/bin/
+ide-ai
+```
+
+#### Windows (com script automático)
 ```powershell
-# Baixar (use o navegador ou curl)
+Invoke-WebRequest -Uri "https://raw.githubusercontent.com/seu-usuario/ide.ai/main/install-windows.ps1" -OutFile "install.ps1"
+.\install.ps1
+```
+
+Ou manualmente:
+```powershell
+# Download ide-ai-windows-x64.exe de:
 # https://github.com/seu-usuario/ide.ai/releases/download/vX.Y.Z/ide-ai-windows-x64.exe
 
 # Executar
