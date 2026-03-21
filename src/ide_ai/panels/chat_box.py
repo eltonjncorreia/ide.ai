@@ -173,7 +173,8 @@ class ChatBox(Vertical):
         self._update_header()
 
     def _title_markup(self) -> str:
-        return f"[{self.number}] {self.provider.name}"
+        provider_emoji = "🤖" if "claude" in self.provider.name.lower() else "🐙"
+        return f"{provider_emoji} [{self.number}] {self.provider.name}"
 
     def _update_header(self) -> None:
         self.query_one("#box-title", Static).update(self._title_markup())

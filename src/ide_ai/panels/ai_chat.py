@@ -68,7 +68,8 @@ class AIChatPanel(Vertical):
     def compose(self) -> ComposeResult:
         yield RichLog(id="chat-log", highlight=True, markup=True, wrap=True)
         with Horizontal(id="chat-input-bar"):
-            yield Static(f"[{self.provider.name}]", id="provider-label")
+            provider_emoji = "🤖" if "claude" in self.provider.name.lower() else "🐙"
+            yield Static(f"{provider_emoji} [{self.provider.name}]", id="provider-label")
             yield Input(placeholder="Ask AI… (Ctrl+Enter to send)", id="chat-input")
 
     def on_mount(self) -> None:
@@ -94,7 +95,8 @@ class AIChatPanel(Vertical):
     def action_toggle_provider(self) -> None:
         self._provider_index = (self._provider_index + 1) % len(self._providers)
         label = self.query_one("#provider-label", Static)
-        label.update(f"[{self.provider.name}]")
+        provider_emoji = "🤖" if "claude" in self.provider.name.lower() else "🐙"
+        label.update(f"{provider_emoji} [{self.provider.name}]")
         log = self.query_one("#chat-log", RichLog)
         log.write(f"\n[dim]— Switched to {self.provider.name} —[/]\n")
 
