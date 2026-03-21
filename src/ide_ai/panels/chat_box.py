@@ -24,6 +24,7 @@ from textual.widgets import Input, RichLog, Select, Static
 from ..ai.claude import ClaudeProvider
 from ..ai.copilot import CopilotProvider
 from ..ai.base import AIProvider
+from ..status_indicators import StatusIndicators
 
 _PROVIDERS: list[type[AIProvider]] = [ClaudeProvider, CopilotProvider]
 
@@ -292,7 +293,7 @@ class ChatBox(Vertical):
         busy = self.query_one("#box-busy", Static)
         self._busy = True
         self._last_response = ""
-        busy.update("⏳")
+        busy.update(StatusIndicators.get_streaming())
         log.write(f"[bold cyan]You:[/] {escape(message)}")
         self._conversation.append(f"You: {message}")
         response_buf: list[str] = []
@@ -309,13 +310,18 @@ class ChatBox(Vertical):
                     log.scroll_end(animate=False)
                     last_flush = now
         except Exception as exc:
+            busy.update(StatusIndicators.get_error())
             preview.update(f"[bold red]Error:[/] {escape(str(exc))}")
         finally:
             self._last_response = accumulated
             if self._last_response:
                 log.write(f"[bold green]{provider_name}:[/] {escape(self._last_response)}")
                 self._conversation.append(f"{provider_name}: {self._last_response}")
+                busy.update(StatusIndicators.get_success())
+            else:
+                busy.update(StatusIndicators.get_idle())
             preview.update("")
             log.scroll_end(animate=False)
             self._busy = False
+            await asyncio.sleep(1.0)
             busy.update("")

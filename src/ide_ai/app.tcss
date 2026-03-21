@@ -82,7 +82,7 @@ Footer {
     background: transparent;
     /* Consistent with header for visual cohesion */
     color: $foreground;
-    text-style: normal;
+    text-style: none;
 }
 
 /* ── PanelGrid ────────────────────────────────────────────────────────────── */
@@ -91,7 +91,7 @@ PanelGrid {
     grid-size: 1;
     height: 1fr;
     padding: 0 1;
-    grid-gutter: 0.5 1;
+    grid-gutter: 1 1;
 }
 
 /* ── Status bar ───────────────────────────────────────────────────────────── */
@@ -145,7 +145,7 @@ ChatBox > #box-header > #box-title {
     width: 1fr;
     /* Muted text indicates inactive state */
     color: $text-muted;
-    text-style: normal;
+    text-style: none;
     transition: color 200ms, text-style 200ms;
 }
 

@@ -6,6 +6,7 @@ from textual.widgets import Input, RichLog, Static
 from ..ai.base import AIProvider
 from ..ai.claude import ClaudeProvider
 from ..ai.copilot import CopilotProvider
+from ..status_indicators import StatusIndicators
 
 _PROVIDERS: list[type[AIProvider]] = [ClaudeProvider, CopilotProvider]
 
@@ -134,12 +135,12 @@ class AIChatPanel(Vertical):
         log = self.query_one("#chat-log", RichLog)
         self._busy = True
         log.write(f"\n[bold cyan]You:[/] {message}\n")
-        log.write(f"[bold green]{self.provider.name}:[/] ")
+        log.write(f"[bold green]{self.provider.name}:[/] {StatusIndicators.get_streaming()} ")
         try:
             async for chunk in self.provider.send(message):
                 log.write(chunk)
+            log.write(f" {StatusIndicators.get_success()}\n")
         except Exception as exc:
-            log.write(f"\n[bold red]Error:[/] {exc}\n")
+            log.write(f"\n[bold red]{StatusIndicators.get_error()} Error:[/] {exc}\n")
         finally:
-            log.write("\n")
             self._busy = False

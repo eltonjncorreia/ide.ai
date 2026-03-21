@@ -3,6 +3,8 @@ from textual.binding import Binding
 from textual.containers import Horizontal, Vertical
 from textual.widgets import Input, RichLog, Static
 
+from ..status_indicators import StatusIndicators
+
 
 class TerminalPanel(Vertical):
     """Simple embedded terminal: command input + async subprocess output."""
@@ -123,7 +125,7 @@ class TerminalPanel(Vertical):
     async def _run_command(self, cmd: str) -> None:
         import asyncio
         log = self.query_one("#term-log", RichLog)
-        log.write(f"$ {cmd}\n")
+        log.write(f"$ {cmd} {StatusIndicators.get_streaming()}\n")
         try:
             proc = await asyncio.create_subprocess_shell(
                 cmd,
@@ -139,6 +141,8 @@ class TerminalPanel(Vertical):
                 log.write(chunk.decode(errors="replace"))
             await proc.wait()
             if proc.returncode and proc.returncode != 0:
-                log.write(f"[exit {proc.returncode}]\n")
+                log.write(f"[{StatusIndicators.get_error()} exit {proc.returncode}]\n")
+            else:
+                log.write(f"[{StatusIndicators.get_success()}]\n")
         except Exception as exc:
-            log.write(f"Error: {exc}\n")
+            log.write(f"{StatusIndicators.get_error()} Error: {exc}\n")
