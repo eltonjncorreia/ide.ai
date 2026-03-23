@@ -5,10 +5,6 @@ Construído com [Textual](https://github.com/Textualize/textual) + [Rich](https:
 
 ![alt text](image.png)
 
-![alt text](image-2.png)
-
-![alt text](image-1.png)
-
 ---
 
 ## 🚀 IDE.AI v2 — New Minimalista Design
