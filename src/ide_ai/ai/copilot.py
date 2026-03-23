@@ -7,13 +7,26 @@ from .base import AIProvider
 
 
 class CopilotProvider(AIProvider):
-    """Streams responses from the standalone `copilot` CLI (GitHub Copilot CLI)."""
+    """Streams responses from the standalone `copilot` CLI.
+    
+    Each instance is independent. Multiple concurrent requests on different
+    instances run in parallel without blocking each other.
+    """
+
+    def __init__(self) -> None:
+        """Initialize a new independent Copilot provider instance."""
+        self._session_id = id(self)  # Unique identifier for this instance
 
     @property
     def name(self) -> str:
         return "Copilot"
 
     async def send(self, message: str, context: list[str] = []) -> AsyncIterator[str]:  # type: ignore[override]
+        """Stream response from Copilot CLI subprocess.
+        
+        This spawns an independent subprocess for each call, allowing
+        multiple concurrent requests on different instances.
+        """
         if not shutil.which("copilot"):
             yield "[bold yellow]⚠ copilot CLI not found.[/]\nInstall: https://github.com/github/copilot-cli\n"
             return
@@ -40,4 +53,5 @@ class CopilotProvider(AIProvider):
         await proc.wait()
 
     async def clear_session(self) -> None:
+        """No session to clear (stateless per-call)."""
         pass

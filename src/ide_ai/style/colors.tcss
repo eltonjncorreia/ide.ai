@@ -1,0 +1,117 @@
+/*
+   ═════════════════════════════════════════════════════════════════════════════
+   IDE.AI v2 — Color System (colors.tcss)
+   
+   Semantic color definitions inspired by Claude Code + GitHub Copilot.
+   Automatically adapts to Textual themes (dracula, nord, catppuccin, etc.)
+   
+   ═════════════════════════════════════════════════════════════════════════════
+*/
+
+:dark {
+    /* ── Semantic Color Palette ────────────────────────────────────────────── */
+    
+    /* Primary Accent — Focus, active state, input prompts */
+    --color-primary: #9D4EDD;    /* Purple — from Claude Code */
+    --color-primary-light: #C78BED;
+    --color-primary-dark: #7D2BAA;
+    
+    /* Secondary — Information, user messages, actions */
+    --color-secondary: #3A86FF;  /* Blue — from Copilot CLI */
+    --color-secondary-light: #7FB3FF;
+    --color-secondary-dark: #1E5DD4;
+    
+    /* Success — Ready state, positive feedback */
+    --color-success: #06D6A0;
+    
+    /* Warning — Activity, attention needed */
+    --color-warning: #FFD60A;
+    
+    /* Error — Problems, alerts */
+    --color-error: #EF476F;
+    
+    /* Neutral surfaces */
+    --color-surface-1: #1F2937;   /* Base dark */
+    --color-surface-2: #2B3E50;   /* Elevated */
+    --color-surface-3: #384858;   /* Higher elevated */
+    
+    /* Text colors */
+    --color-text-primary: #F3F4F6;    /* Full contrast */
+    --color-text-secondary: #9CA3AF;  /* Dimmed, secondary */
+    --color-text-muted: #6B7280;      /* Very dimmed, hints */
+    
+    /* Borders & dividers */
+    --color-border: #4B5563;      /* Subtle lines */
+    --color-border-light: #6B7A8A; /* More visible */
+}
+
+:light {
+    /* Light theme (optional) */
+    --color-primary: #8B5CF6;
+    --color-secondary: #0EA5E9;
+    --color-success: #10B981;
+    --color-warning: #F59E0B;
+    --color-error: #EF4444;
+    
+    --color-surface-1: #F9FAFB;
+    --color-surface-2: #F3F4F6;
+    --color-surface-3: #E5E7EB;
+    
+    --color-text-primary: #1F2937;
+    --color-text-secondary: #6B7280;
+    --color-text-muted: #9CA3AF;
+    
+    --color-border: #D1D5DB;
+    --color-border-light: #E5E7EB;
+}
+
+/* ── Global Color Mappings ────────────────────────────────────────────────── */
+
+Screen {
+    /* Use Textual theme variables as fallback */
+    background: $background;
+    color: $text;
+}
+
+/* ── Utility Classes for Quick Color Access ───────────────────────────────── */
+
+.text-primary {
+    color: var(--color-text-primary);
+}
+
+.text-secondary {
+    color: var(--color-text-secondary);
+}
+
+.text-muted {
+    color: var(--color-text-muted);
+}
+
+.accent {
+    color: var(--color-primary);
+    text-style: bold;
+}
+
+.accent-bg {
+    background: var(--color-primary) 10%;
+    color: var(--color-primary);
+}
+
+.secondary {
+    color: var(--color-secondary);
+}
+
+.success {
+    color: var(--color-success);
+    text-style: bold;
+}
+
+.warning {
+    color: var(--color-warning);
+    text-style: bold;
+}
+
+.error {
+    color: var(--color-error);
+    text-style: bold;
+}

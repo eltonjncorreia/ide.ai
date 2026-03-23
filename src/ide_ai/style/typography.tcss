@@ -1,0 +1,125 @@
+/*
+   ═════════════════════════════════════════════════════════════════════════════
+   IDE.AI v2 — Typography (typography.tcss)
+   
+   Font hierarchy, sizes, weights, and styles.
+   Optimized for terminal rendering and readability.
+   
+   ═════════════════════════════════════════════════════════════════════════════
+*/
+
+/* ── Global Typography ────────────────────────────────────────────────────── */
+
+Screen {
+    /* Monospace font for terminal readability */
+    /* Fallback chain: Fira Code → JetBrains Mono → Courier */
+}
+
+/* ── Header Typography ────────────────────────────────────────────────────── */
+
+Header {
+    text-style: bold;
+    text-opacity: 100%;
+}
+
+/* ── Input & Prompt Typography ────────────────────────────────────────────– */
+
+#prompt {
+    text-style: bold;       /* Make ">" stand out */
+    text-opacity: 100%;
+}
+
+#input-field {
+    text-opacity: 100%;
+}
+
+/* ── Labels & Headers ────────────────────────────────────────────────────── */
+
+#provider-label {
+    text-style: bold;
+}
+
+#session-info {
+    text-style: none;
+    text-opacity: 80%;      /* Slightly dimmed for secondary info */
+}
+
+/* ── Message Styles ─────────────────────────────────────────────────────── */
+
+.message-user {
+    text-style: bold;
+}
+
+.message-user-content {
+    text-style: none;
+}
+
+.message-ai {
+    text-style: bold;
+}
+
+.message-ai-content {
+    text-style: none;
+}
+
+/* ── Status Indicators ──────────────────────────────────────────────────── */
+
+.status-ready {
+    text-style: bold;
+}
+
+.status-thinking {
+    text-style: bold;
+    text-opacity: 80%;
+}
+
+.status-error {
+    text-style: bold;
+}
+
+/* ── Code Blocks ────────────────────────────────────────────────────────– */
+
+.code-block {
+    text-style: none;
+}
+
+/* ── Button Typography ──────────────────────────────────────────────────– */
+
+Button {
+    text-style: none;
+    text-opacity: 100%;
+}
+
+Button:hover {
+    text-style: none;
+}
+
+Button.--active {
+    text-style: bold;
+}
+
+/* ── Utility Classes ────────────────────────────────────────────────────── */
+
+.font-bold {
+    text-style: bold;
+}
+
+.font-normal {
+    text-style: none;
+}
+
+.font-italic {
+    text-style: italic;
+}
+
+.text-small {
+    text-opacity: 80%;
+}
+
+.text-muted {
+    text-opacity: 60%;
+}
+
+.text-dim {
+    text-opacity: 40%;
+}

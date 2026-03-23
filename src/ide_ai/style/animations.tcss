@@ -1,0 +1,176 @@
+/*
+   ═════════════════════════════════════════════════════════════════════════════
+   IDE.AI v2 — Animations (animations.tcss)
+   
+   Smooth transitions and keyframe animations.
+   Focus on visual feedback and polish without being distracting.
+   
+   ═════════════════════════════════════════════════════════════════════════════
+*/
+
+/* ── Global Transitions ─────────────────────────────────────────────────── */
+
+/* Default smooth transitions for interactive elements */
+Button,
+.provider-tab,
+.action-btn {
+    transition: color 200ms ease-out, background 200ms ease-out;
+}
+
+/* ── Focus/Hover Transitions ────────────────────────────────────────────── */
+
+#prompt,
+#input-field {
+    transition: color 200ms ease-out, border 200ms ease-out;
+}
+
+Header,
+#chat-header,
+#status-bar {
+    transition: background 200ms ease-out, color 200ms ease-out;
+}
+
+/* ── Panel Visibility Transitions ───────────────────────────────────────── */
+
+#auxiliary-panels {
+    transition: height 300ms ease-out, opacity 300ms ease-out;
+}
+
+/* ── Message Rendering Animations ───────────────────────────────────────– */
+
+.message-user,
+.message-ai {
+    animation: fade-in 300ms ease-out forwards;
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 100%;
+    }
+}
+
+/* ── Status Indicator Animations ────────────────────────────────────────– */
+
+.spinner {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        text-opacity: 70%;
+    }
+    25% {
+        text-opacity: 100%;
+    }
+    50% {
+        text-opacity: 100%;
+    }
+    75% {
+        text-opacity: 100%;
+    }
+    to {
+        text-opacity: 70%;
+    }
+}
+
+/* Thinking status — subtle pulse */
+.status-thinking {
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%,
+    100% {
+        text-opacity: 80%;
+    }
+    50% {
+        text-opacity: 100%;
+    }
+}
+
+/* Success check — quick flash */
+.status-ready {
+    animation: flash-success 500ms ease-out;
+}
+
+@keyframes flash-success {
+    0% {
+        text-opacity: 50%;
+    }
+    50% {
+        text-opacity: 100%;
+    }
+    100% {
+        text-opacity: 100%;
+    }
+}
+
+/* ── Focus Ring Animations ──────────────────────────────────────────────– */
+
+Button:focus {
+    animation: focus-ring 300ms ease-out forwards;
+}
+
+@keyframes focus-ring {
+    from {
+        background: transparent;
+        color: $text-muted;
+    }
+    to {
+        background: $secondary 10%;
+        color: $secondary;
+    }
+}
+
+/* ── Slide Animations (for panels) ──────────────────────────────────────– */
+
+.slide-in-up {
+    animation: slide-in-up 300ms ease-out forwards;
+}
+
+@keyframes slide-in-up {
+    from {
+        height: 0;
+        opacity: 0;
+    }
+    to {
+        height: auto;
+        opacity: 100%;
+    }
+}
+
+.slide-out-down {
+    animation: slide-out-down 300ms ease-in forwards;
+}
+
+@keyframes slide-out-down {
+    from {
+        height: auto;
+        opacity: 100%;
+    }
+    to {
+        height: 0;
+        opacity: 0;
+    }
+}
+
+/* ── Utility Animation Classes ──────────────────────────────────────────– */
+
+.animate-none {
+    transition: none;
+}
+
+.animate-slow {
+    transition: all 500ms ease-out;
+}
+
+.animate-normal {
+    transition: all 300ms ease-out;
+}
+
+.animate-fast {
+    transition: all 150ms ease-out;
+}

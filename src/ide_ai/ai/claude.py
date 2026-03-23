@@ -6,13 +6,26 @@ from .base import AIProvider
 
 
 class ClaudeProvider(AIProvider):
-    """Streams responses from the `claude` CLI via asyncio subprocess."""
+    """Streams responses from the `claude` CLI via asyncio subprocess.
+    
+    Each instance is independent. Multiple concurrent requests on different
+    instances run in parallel without blocking each other.
+    """
+
+    def __init__(self) -> None:
+        """Initialize a new independent Claude provider instance."""
+        self._session_id = id(self)  # Unique identifier for this instance
 
     @property
     def name(self) -> str:
         return "Claude"
 
     async def send(self, message: str, context: list[str] = []) -> AsyncIterator[str]:  # type: ignore[override]
+        """Stream response from Claude CLI subprocess.
+        
+        This spawns an independent subprocess for each call, allowing
+        multiple concurrent requests on different instances.
+        """
         if not shutil.which("claude"):
             async for chunk in _mock_stream(message):
                 yield chunk
@@ -36,7 +49,8 @@ class ClaudeProvider(AIProvider):
             yield f"\n[bold red]Error (exit {proc.returncode}):[/] {stderr_data.decode(errors='replace')}\n"
 
     async def clear_session(self) -> None:
-        pass  # stateless per-call
+        """No session to clear (stateless per-call)."""
+        pass
 
 
 async def _mock_stream(message: str) -> AsyncIterator[str]:

@@ -1,0 +1,379 @@
+/*
+   ═════════════════════════════════════════════════════════════════════════════
+   IDE.AI v2 — Main Stylesheet (app_new.tcss)
+   
+   Combines modular style system:
+   - colors.tcss       (semantic color palette)
+   - typography.tcss   (font hierarchy)
+   - spacing.tcss      (layout rhythm)
+   - animations.tcss   (transitions & keyframes)
+   
+   Minimalista, inspirado em Claude Code + GitHub Copilot CLI
+   Layout focado em chat, com panels auxiliares colapsíveis.
+   
+   ═════════════════════════════════════════════════════════════════════════════
+*/
+
+/* ── Global Styles ────────────────────────────────────────────────────────── */
+Screen {
+    background: $background;
+    layers: base overlay;
+}
+
+Header {
+    background: $panel;
+    color: $foreground;
+    text-style: bold;
+    height: 1;
+    border-bottom: solid $panel-lighten-1;
+    padding: 0 2;
+}
+
+Footer {
+    background: $panel;
+    color: $foreground;
+    text-style: none;
+    height: auto;
+    padding: 0 2;
+}
+
+/* ── Main Container ───────────────────────────────────────────────────────── */
+#app-container {
+    layout: vertical;
+    height: 1fr;
+    width: 100%;
+    background: transparent;
+}
+
+#chat-tabs-container {
+    height: 1fr;
+    layout: vertical;
+    background: transparent;
+}
+
+#bottom-bar {
+    height: 1;
+    layout: horizontal;
+    border-top: solid $panel-lighten-1;
+    background: $panel-lighten-2;
+}
+
+/* ── Chat Panel (Main) ────────────────────────────────────────────────────── */
+ChatPanel {
+    height: 1fr;
+    background: transparent;
+    border: none;
+    layout: vertical;
+}
+
+ChatPanel > #chat-header {
+    height: 1;
+    background: $panel-lighten-2;
+    color: $text-muted;
+    border-bottom: solid $panel-lighten-1;
+    layout: horizontal;
+    padding: 0 2;
+    transition: background 200ms, color 200ms;
+}
+
+ChatPanel > #chat-header > #provider-label {
+    width: auto;
+    content-align: left middle;
+    color: $accent;
+    text-style: bold;
+}
+
+ChatPanel > #chat-header > #spacer {
+    width: 1fr;
+}
+
+ChatPanel > #chat-header > #session-info {
+    width: auto;
+    text-align: right;
+    color: $text-muted;
+}
+
+ChatPanel > #chat-log {
+    height: 1fr;
+    background: transparent;
+    padding: 1 2;
+    scrollbar-gutter: stable;
+}
+
+ChatPanel > #chat-input-area {
+    height: auto;
+    layout: vertical;
+    border-top: solid $panel-lighten-1;
+    background: $panel 5%;
+    padding: 1 2;
+    max-height: 10;
+}
+
+ChatPanel > #chat-input-area > #input-container {
+    height: auto;
+    layout: horizontal;
+    max-height: 10;
+}
+
+ChatPanel > #chat-input-area > #input-container > #prompt {
+    width: auto;
+    color: $accent;
+    text-style: bold;
+    padding: 0 1;
+    content-align: left top;
+}
+
+ChatPanel > #chat-input-area > #input-container > #input-field {
+    width: 1fr;
+    height: auto;
+    background: transparent;
+    border: none;
+    color: $text;
+    max-height: 10;
+    scrollbar-vertical: auto;
+    scrollbar-gutter: stable;
+}
+
+/* ── Provider Bar (Bottom Left) ────────────────────────────────────────────── */
+ProviderBar {
+    width: auto;
+    height: 1;
+    background: transparent;
+    border: none;
+    layout: horizontal;
+    padding: 0 1;
+}
+
+ProviderBar > Button {
+    width: auto;
+    padding: 0 2;
+    color: $text-muted;
+    text-style: none;
+    background: transparent;
+    border: none;
+    transition: color 200ms, text-style 200ms, background 200ms;
+}
+
+ProviderBar > Button:hover {
+    color: $secondary;
+}
+
+ProviderBar > Button.--active {
+    color: $accent;
+    text-style: bold;
+    background: $accent 5%;
+}
+
+/* ── Action Bar (Bottom Right) ─────────────────────────────────────────────── */
+ActionBar {
+    width: 1fr;
+    height: 1;
+    background: transparent;
+    border: none;
+    layout: horizontal;
+    padding: 0 1;
+    align: right middle;
+}
+
+ActionBar > Button {
+    width: auto;
+    padding: 0 1;
+    margin-right: 1;
+    color: $text-muted;
+    background: transparent;
+    border: none;
+    transition: color 200ms, background 200ms;
+}
+
+ActionBar > Button:hover {
+    background: $secondary 10%;
+    color: $secondary;
+}
+
+ActionBar > Button.--active {
+    background: $accent 10%;
+    color: $accent;
+    text-style: bold;
+}
+
+ActionBar > Button:last-child {
+    margin-right: 0;
+}
+
+ActionBar > #spacer {
+    width: 1fr;
+}
+
+/* ── Status Bar ───────────────────────────────────────────────────────────── */
+#status-bar {
+    height: 1;
+    background: $panel;
+    color: $text-muted;
+    padding: 0 2;
+    text-align: left;
+    display: none;
+}
+
+/* ── Auxiliary Panels (Collapsed) ─────────────────────────────────────────── */
+#auxiliary-panels {
+    height: 0;
+    background: $panel;
+    border-top: solid $panel-lighten-1;
+    display: block;
+    transition: height 300ms ease-out, opacity 300ms ease-out;
+    opacity: 0;
+    overflow: hidden;
+}
+
+#auxiliary-panels.--visible {
+    height: 8;
+    opacity: 100%;
+    animation: slide-in-up 300ms ease-out;
+}
+
+#auxiliary-panels > #file-tree-panel {
+    height: 100%;
+    width: 24;
+    border-right: solid $panel-lighten-1;
+}
+
+#auxiliary-panels > #terminal-panel {
+    height: 100%;
+    width: 1fr;
+}
+
+/* ── Message Rendering ────────────────────────────────────────────────────── */
+.message-user {
+    color: $secondary;
+    text-style: bold;
+}
+
+.message-user-content {
+    color: $text;
+    background: $secondary 3%;
+    padding: 1 2;
+    margin-bottom: 1;
+}
+
+.message-ai {
+    color: $accent;
+    text-style: bold;
+}
+
+.message-ai-content {
+    color: $text;
+    background: $accent 3%;
+    padding: 1 2;
+    margin-bottom: 1;
+}
+
+.code-block {
+    background: $panel;
+    border: solid $panel-lighten-1;
+    padding: 1 2;
+    margin: 1 0;
+}
+
+/* ── Text Utilities ────────────────────────────────────────────────────────── */
+.text-accent {
+    color: $accent;
+}
+
+.text-secondary {
+    color: $secondary;
+}
+
+.text-success {
+    color: $success;
+}
+
+.text-warning {
+    color: $warning;
+}
+
+.text-error {
+    color: $error;
+}
+
+.text-muted {
+    color: $text-muted;
+}
+
+/* ── Responsive Breakpoints ────────────────────────────────────────────────── */
+/* 
+   Responsive design tiers:
+   - Small    (<80 cols):  1 column, minimal padding
+   - Medium   (80-159):    2 columns, normal padding
+   - Large    (160-239):   3 columns, comfortable padding
+   - XL       (240+):      4 columns, generous spacing
+*/
+
+/* Small terminals: < 80 columns
+   - Hide non-essential UI elements
+   - Reduce padding to save space
+   - Stack layout vertically where possible
+*/
+@media (max-width: 79) {
+    ChatPanel > #chat-header > #session-info {
+        display: none;
+    }
+    
+    ActionBar > Button {
+        padding: 0;
+        margin-right: 1;
+        width: auto;
+    }
+    
+    ProviderBar > Button {
+        padding: 0 1;
+    }
+}
+
+/* Medium terminals: 80-159 columns
+   - Normal layout
+   - Standard spacing
+   - All UI elements visible
+*/
+@media (min-width: 80) and (max-width: 159) {
+    ChatPanel > #chat-log {
+        padding: 1 1;
+    }
+    
+    ChatPanel > #chat-input-area {
+        padding: 1 1;
+    }
+}
+
+/* Large terminals: 160-239 columns
+   - Comfortable spacing
+   - All features visible
+   - Optimized for wide displays
+*/
+@media (min-width: 160) and (max-width: 239) {
+    ChatPanel > #chat-log {
+        padding: 1 2;
+    }
+    
+    ChatPanel > #chat-input-area {
+        padding: 1 2;
+    }
+}
+
+/* XL terminals: 240+ columns
+   - Generous spacing
+   - Premium appearance
+   - Multi-panel support
+*/
+@media (min-width: 240) {
+    ChatPanel > #chat-log {
+        padding: 2 3;
+    }
+    
+    ChatPanel > #chat-input-area {
+        padding: 1 3;
+    }
+    
+    #auxiliary-panels {
+        max-height: 10;
+    }
+}
